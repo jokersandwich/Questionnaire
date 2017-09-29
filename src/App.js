@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { Button } from 'antd';
-import { Link } from 'react-router-dom';
 import { Header } from './components';
 
 class App extends Component {
@@ -14,11 +12,6 @@ class App extends Component {
           <h1 className="App-title">Welcome to React</h1>
         </header>
         <Header />
-        <br />
-        <Link to="/"><Button>Home Page</Button></Link>
-        <Link to="/edit"><Button>Edit Page</Button></Link>
-        <Link to="/fill"><Button>Fill Page</Button></Link>
-        <Link to="/check"><Button>CheckPage</Button></Link>
       </div>
     );
   }

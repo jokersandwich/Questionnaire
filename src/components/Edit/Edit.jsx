@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 const Edit = () => (<div><h2>Edit</h2></div>);
 

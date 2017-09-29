@@ -4,11 +4,7 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-
-const Home = () => (<div><h2>Home</h2></div>);
-const Edit = () => (<div><h2>Edit</h2></div>);
-const Fill = () => (<div><h2>Fill</h2></div>);
-const Check = () => (<div><h2>Check</h2></div>);
+import { Home, Edit, Fill, Check } from './components';
 
 ReactDOM.render(
     <BrowserRouter>

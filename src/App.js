@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import { Button } from 'antd';
 import { Link } from 'react-router-dom';
+import { Header } from './components';
 
 class App extends Component {
   render() {
@@ -12,6 +13,7 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
+        <Header />
         <br />
         <Link to="/"><Button>Home Page</Button></Link>
         <Link to="/edit"><Button>Edit Page</Button></Link>

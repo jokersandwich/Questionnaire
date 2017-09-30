@@ -1,8 +1,34 @@
 import React from 'react';
-import { Table, Button } from 'antd';
+import { Table, Button, Popconfirm } from 'antd';
 import { Link } from 'react-router-dom';
 
 class Home extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            dataSource: [{
+                key: '1',
+                title: '问卷一',
+                time: '2017/10/10',
+                stage: '未发布'
+            }, {
+                key: '2',
+                title: '问卷二',
+                time: '2017/10/10',
+                stage: '发布中'
+            }, {
+                key: '3',
+                title: '问卷三',
+                time: '2017/10/10',
+                stage: '已结束'
+            }]
+        }
+    }
+
+    handleDelete(key) {
+        const dataSource = [...this.state.dataSource];
+        this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
+    }
 
     render() {
         const columns = [{
@@ -39,31 +65,16 @@ class Home extends React.Component {
                 return (
                     <span>
                         {firstButton}
-                        <Button style={{ marginLeft: 8 }}>删除问卷</Button>
+                        <Popconfirm title="确定要删除吗?" onConfirm={() => this.handleDelete(record.key)}>
+                            <Button style={{ marginLeft: 8 }}>删除问卷</Button>
+                        </Popconfirm>
                     </span>
                 );
             }
         }];
 
-        const data = [{
-            key: '1',
-            title: '问卷一',
-            time: '2017/10/10',
-            stage: '未发布'
-        }, {
-            key: '2',
-            title: '问卷二',
-            time: '2017/10/10',
-            stage: '发布中'
-        }, {
-            key: '3',
-            title: '问卷三',
-            time: '2017/10/10',
-            stage: '已结束'
-        }];
-
         return (
-            <Table columns={columns} dataSource={data} />
+            <Table columns={columns} dataSource={this.state.dataSource} />
         );
     }
 }

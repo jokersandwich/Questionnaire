@@ -61,6 +61,8 @@ class Home extends React.Component {
                     case '已结束':
                         firstButton = <Link to="/check"><Button>查看数据</Button></Link>
                         break;
+                    default:
+                        firstButton = <div></div>
                 }
                 return (
                     <span>

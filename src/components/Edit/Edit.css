@@ -10,6 +10,11 @@
     background: #ecf6fd;
 }
 
+.addOption:hover {
+    border: 1px dotted #7ec2f3;
+    cursor: pointer;
+}
+
 .questionOperate:hover {
     cursor: pointer;
 }

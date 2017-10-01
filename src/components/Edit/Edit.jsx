@@ -8,7 +8,11 @@ class Edit extends React.Component {
         this.handleTitleClick = this.handleTitleClick.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleTitleBlur = this.handleTitleBlur.bind(this);
+        /* this.handleAddOption = this.handleAddOption.bind(this); */
         this.handleAddQuestion = this.handleAddQuestion.bind(this);
+        this.handleAddRadio = this.handleAddRadio.bind(this);
+        this.handleAddCheckBox = this.handleAddCheckBox.bind(this);
+        this.handleAddTextArea = this.handleAddTextArea.bind(this);
         this.handleDatePick = this.handleDatePick.bind(this);
         this.state = {
             id: '',
@@ -18,13 +22,13 @@ class Edit extends React.Component {
                 id: '1',
                 title: '单选题',
                 options: [{
-                    text: '选项1'
+                    text: '选项一'
                 }, {
-                    text: '选项2'
+                    text: '选项二'
                 }, {
-                    text: '选项3'
+                    text: '选项三'
                 }, {
-                    text: '选项4'
+                    text: '选项四'
                 }]
             }, {
                 type: 'checkBox',
@@ -102,6 +106,15 @@ class Edit extends React.Component {
         );
     }
 
+    /* handleAddOption() {
+        const newOption = { text: '新选项' };
+        let { questions } = this.state;
+        questions[0].options.push(newOption);
+        this.setState({
+            questions: questions
+        })
+    } */
+
     getQuestions() {
         let questions = this.state.questions;
         const { TextArea } = Input;
@@ -112,7 +125,7 @@ class Edit extends React.Component {
             marginLeft: '32px'
         };
         return questions.map((question) => {
-            if (question.type == 'radio') {
+            if (question.type === 'radio') {
                 return (
                     <div className="questionsWrap" style={{ padding: 30 }} key={question.id}>
                         <p>
@@ -126,11 +139,12 @@ class Edit extends React.Component {
                                 );
                             })}
                         </Radio.Group>
+                        {/* <div className="addOption" style={{ width: '95%', height: 28, margin: '8px 32px' }} onClick={this.handleAddOption}></div> */}
                         {this.getQuestionOperator()}
                     </div>
                 );
             } 
-            else if (question.type == 'checkBox') {
+            else if (question.type === 'checkBox') {
                 return (
                     <div className="questionsWrap" style={{ padding: 30 }} key={question.id}>
                         <p>
@@ -148,7 +162,7 @@ class Edit extends React.Component {
                     </div>
                 );
             }
-            else if (question.type == 'textArea' ) {
+            else if (question.type === 'textArea' ) {
                 return (
                     <div className="questionsWrap" style={{ padding: 30 }}  key={question.id}>
                         <p>
@@ -163,6 +177,9 @@ class Edit extends React.Component {
                     </div>
                 );
             }
+            else {
+                return <div></div>;
+            }
         })
     }
 
@@ -172,13 +189,68 @@ class Edit extends React.Component {
         })
     }
 
+    handleAddRadio() {
+        const newQuestion = {
+            type: 'radio',
+            id: '1',
+            title: '单选题',
+            options: [{
+                text: '选项一'
+            }, {
+                text: '选项二'
+            }, {
+                text: '选项三'
+            }, {
+                text: '选项四'
+            }]
+        };
+        this.setState((prevState) => ({
+            questions: prevState.questions.concat(newQuestion),
+            addAreaVisible: false
+        }));
+    }
+
+    handleAddCheckBox() {
+        const newQuestion = {
+            type: 'checkBox',
+            id: '2',
+            title: '多选题',
+            options: [{
+                text: '选项一'
+            }, {
+                text: '选项二'
+            }, {
+                text: '选项三'
+            }, {
+                text: '选项四'
+            }]
+        };
+        this.setState((prevState) => ({
+            questions: prevState.questions.concat(newQuestion),
+            addAreaVisible: false
+        }));
+    }
+
+    handleAddTextArea() {
+        const newQuestion = {
+            type: 'textArea',
+            id: '3',
+            title: '文本题',
+            required: false
+        };
+        this.setState((prevState) => ({
+            questions: prevState.questions.concat(newQuestion),
+            addAreaVisible: false
+        }));
+    }
+
     getAddArea() {
         return (
             this.state.addAreaVisible ? (
                 <div style={{ padding: 30, textAlign: 'center', border: '1px solid #eee' }}>
-                    <Button icon="check-circle-o" size="large">单选</Button>
-                    <Button icon="check-square-o" size="large" style={{ marginLeft: 16 }}>多选</Button>
-                    <Button icon="file-text" size="large" style={{ marginLeft: 16 }}>文本</Button>
+                    <Button icon="check-circle-o" size="large" onClick={this.handleAddRadio}>单选</Button>
+                    <Button icon="check-square-o" size="large" style={{ marginLeft: 16 }} onClick={this.handleAddCheckBox}>多选</Button>
+                    <Button icon="file-text" size="large" style={{ marginLeft: 16 }} onClick={this.handleAddTextArea}>文本</Button>
                 </div>
             ) : ''
         );

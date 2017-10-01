@@ -2,6 +2,14 @@
     background: #ecf6fd;
 }
 
-.eidtAddQuestion:hover {
+.addQuestion:hover {
+    cursor: pointer;
+}
+
+.questionsWrap:hover {
+    background: #ecf6fd;
+}
+
+.questionsOperate:hover {
     cursor: pointer;
 }

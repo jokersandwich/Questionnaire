@@ -9,17 +9,17 @@ class Home extends React.Component {
             dataSource: [{
                 key: '1',
                 title: '问卷一',
-                time: '2017/10/10',
+                date: '2017/10/10',
                 stage: '未发布'
             }, {
                 key: '2',
                 title: '问卷二',
-                time: '2017/10/10',
+                date: '2017/10/10',
                 stage: '发布中'
             }, {
                 key: '3',
                 title: '问卷三',
-                time: '2017/10/10',
+                date: '2017/10/10',
                 stage: '已结束'
             }]
         }
@@ -38,8 +38,8 @@ class Home extends React.Component {
             width: '25%'
         }, {
             title: '时间',
-            dataIndex: 'time',
-            key: 'time',
+            dataIndex: 'date',
+            key: 'date',
             width: '25%'
         }, {
             title: '阶段',

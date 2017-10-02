@@ -107,8 +107,9 @@ class Edit extends React.Component {
 
     handleCopyQuestion(questionIndex) {
         let { questions } = this.state;
-        let copy = questions.slice(questionIndex, questionIndex + 1)[0];
-        questions.splice(questionIndex, 0, copy);
+        let copy = Object.assign({}, questions[questionIndex]);
+        copy.options = copy.options.slice(0);
+        questions.splice(questionIndex + 1, 0, copy);
         this.setState({
             questions: questions
         });
@@ -299,13 +300,15 @@ class Edit extends React.Component {
             date: dateString
         })
     }
-0
+
     getFooter() {
+        const disabledDate = (current) => current && current.valueOf() < Date.now();
         return (
             <div style={{ padding: 20 }}>
                 <div style={{ float: 'left' }}>
                     <span>问卷截止日期：</span>
-                    <DatePicker onChange={this.handleDatePick} />
+                    <DatePicker onChange={this.handleDatePick} disabledDate={disabledDate}/>
+                    <span style={{ marginLeft: 16 }}>你选择的日期是： {this.state.date}</span>
                 </div>
                 <div style={{ float: 'right' }}>
                     <Button>保存问卷</Button>

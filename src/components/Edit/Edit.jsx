@@ -8,7 +8,7 @@ class Edit extends React.Component {
         this.handleTitleClick = this.handleTitleClick.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleTitleBlur = this.handleTitleBlur.bind(this);
-        /* this.handleAddOption = this.handleAddOption.bind(this); */
+        this.handleAddOption = this.handleAddOption.bind(this);
         this.handleAddQuestion = this.handleAddQuestion.bind(this);
         this.handleAddRadio = this.handleAddRadio.bind(this);
         this.handleAddCheckBox = this.handleAddCheckBox.bind(this);
@@ -106,14 +106,14 @@ class Edit extends React.Component {
         );
     }
 
-    /* handleAddOption() {
+    handleAddOption(questionIndex) {
         const newOption = { text: '新选项' };
         let { questions } = this.state;
-        questions[0].options.push(newOption);
+        questions[questionIndex].options.push(newOption);
         this.setState({
             questions: questions
         })
-    } */
+    }
 
     getQuestions() {
         let questions = this.state.questions;
@@ -124,49 +124,50 @@ class Edit extends React.Component {
             lineHeight: '28px',
             marginLeft: '32px'
         };
-        return questions.map((question) => {
+        return questions.map((question, questionIndex) => {
             if (question.type === 'radio') {
                 return (
-                    <div className="questionsWrap" style={{ padding: 30 }} key={question.id}>
+                    <div className="questionsWrap" style={{ padding: 30 }} key={questionIndex}>
                         <p>
-                            <span style={{ position: 'absolute' }}>Q{question.id}</span>
+                            <span style={{ position: 'absolute' }}>Q{questionIndex}</span>
                             <span style={{ marginLeft: 32 }}>{question.title}</span>
                         </p>
                         <Radio.Group>
-                            {question.options.map((option) => {
+                            {question.options.map((option, optionIndex) => {
                                 return (
-                                    <Radio style={radioStyle} value={option.text} key={option.text}>{option.text}</Radio>
+                                    <Radio style={radioStyle} value={option.text} key={optionIndex}>{option.text}</Radio>
                                 );
                             })}
                         </Radio.Group>
-                        {/* <div className="addOption" style={{ width: '95%', height: 28, margin: '8px 32px' }} onClick={this.handleAddOption}></div> */}
+                        <div className="addOption" style={{ width: '95%', height: 28, margin: '8px 32px' }} onClick={() => this.handleAddOption(questionIndex)}></div>
                         {this.getQuestionOperator()}
                     </div>
                 );
             } 
             else if (question.type === 'checkBox') {
                 return (
-                    <div className="questionsWrap" style={{ padding: 30 }} key={question.id}>
+                    <div className="questionsWrap" style={{ padding: 30 }} key={questionIndex}>
                         <p>
-                            <span style={{position: 'absolute' }}>Q{question.id}</span>
+                            <span style={{position: 'absolute' }}>Q{questionIndex}</span>
                             <span style={{ marginLeft: 32 }}>{question.title}</span>
                         </p>
                         <Checkbox.Group>
-                            {question.options.map((option) => {
+                            {question.options.map((option, optionIndex) => {
                                 return (
-                                    <Checkbox style={radioStyle} value={option.text} key={option.text}>{option.text}</Checkbox>
+                                    <Checkbox style={radioStyle} value={option.text} key={optionIndex}>{option.text}</Checkbox>
                                 );
                             })}
                         </Checkbox.Group>
+                        <div className="addOption" style={{ width: '95%', height: 28, margin: '8px 32px' }} onClick={() => this.handleAddOption(questionIndex)}></div>
                         {this.getQuestionOperator()}
                     </div>
                 );
             }
             else if (question.type === 'textArea' ) {
                 return (
-                    <div className="questionsWrap" style={{ padding: 30 }}  key={question.id}>
+                    <div className="questionsWrap" style={{ padding: 30 }}  key={questionIndex}>
                         <p>
-                            <span style={{ position: 'absolute' }}>Q{question.id}</span>
+                            <span style={{ position: 'absolute' }}>Q{questionIndex}</span>
                             <span style={{ marginLeft: 32 }}>{question.title}</span>
                         </p>
                         <div style={{ margin: '8px 32px' }}>

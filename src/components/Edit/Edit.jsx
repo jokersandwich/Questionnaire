@@ -8,6 +8,9 @@ class Edit extends React.Component {
         this.handleTitleClick = this.handleTitleClick.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleTitleBlur = this.handleTitleBlur.bind(this);
+        this.handleShiftQuestion = this.handleShiftQuestion.bind(this);
+        this.handleCopyQuestion = this.handleCopyQuestion.bind(this);
+        this.handleRemoveQuestion = this.handleRemoveQuestion.bind(this);
         this.handleAddOption = this.handleAddOption.bind(this);
         this.handleAddQuestion = this.handleAddQuestion.bind(this);
         this.handleAddRadio = this.handleAddRadio.bind(this);
@@ -93,14 +96,48 @@ class Edit extends React.Component {
         );
     }
 
-    getQuestionOperator() {
+    handleShiftQuestion(questionIndex, num) {
+        let { questions } = this.state;
+        let shiftQuestion = questions.splice(questionIndex, 1)[0];
+        questions.splice(questionIndex + num, 0, shiftQuestion);
+        this.setState({
+            questions: questions
+        })
+    }
+
+    handleCopyQuestion(questionIndex) {
+        let { questions } = this.state;
+        let copy = questions.slice(questionIndex, questionIndex + 1)[0];
+        questions.splice(questionIndex, 0, copy);
+        this.setState({
+            questions: questions
+        });
+    }
+
+    handleRemoveQuestion(questionIndex) {
+        let { questions } = this.state;
+        questions.splice(questionIndex, 1);
+        this.setState({
+            questions: questions
+        });
+    }
+
+    getQuestionOperator(questionIndex, array) {
         return (
             <div>
                 <p style={{ float: 'right' }}>
-                    <span className="questionOperate" style={{ marginLeft: 8 }}>上移</span>
-                    <span className="questionOperate" style={{ marginLeft: 8 }}>下移</span>
-                    <span className="questionOperate" style={{ marginLeft: 8 }}>复用</span>
-                    <span className="questionOperate" style={{ marginLeft: 8 }}>删除</span>
+                    {questionIndex === 0 ? (
+                        null
+                    ) : (
+                        <span className="questionOperate" style={{ marginLeft: 8 }} onClick={() => this.handleShiftQuestion(questionIndex, -1)}>上移</span>
+                    )}
+                    {questionIndex === array.length - 1 ? (
+                        null
+                    ) : (
+                        <span className="questionOperate" style={{ marginLeft: 8 }} onClick={() => this.handleShiftQuestion(questionIndex, 1)}>下移</span>
+                    )}
+                    <span className="questionOperate" style={{ marginLeft: 8 }} onClick={() => this.handleCopyQuestion(questionIndex)}>复用</span>
+                    <span className="questionOperate" style={{ marginLeft: 8 }} onClick={() => this.handleRemoveQuestion(questionIndex)}>删除</span>
                 </p>
             </div>
         );
@@ -112,7 +149,7 @@ class Edit extends React.Component {
         questions[questionIndex].options.push(newOption);
         this.setState({
             questions: questions
-        })
+        });
     }
 
     getQuestions() {
@@ -124,12 +161,12 @@ class Edit extends React.Component {
             lineHeight: '28px',
             marginLeft: '32px'
         };
-        return questions.map((question, questionIndex) => {
+        return questions.map((question, questionIndex, array) => {
             if (question.type === 'radio') {
                 return (
                     <div className="questionsWrap" style={{ padding: 30 }} key={questionIndex}>
                         <p>
-                            <span style={{ position: 'absolute' }}>Q{questionIndex}</span>
+                            <span style={{ position: 'absolute' }}>Q{questionIndex + 1}</span>
                             <span style={{ marginLeft: 32 }}>{question.title}</span>
                         </p>
                         <Radio.Group>
@@ -140,7 +177,7 @@ class Edit extends React.Component {
                             })}
                         </Radio.Group>
                         <div className="addOption" style={{ width: '95%', height: 28, margin: '8px 32px' }} onClick={() => this.handleAddOption(questionIndex)}></div>
-                        {this.getQuestionOperator()}
+                        {this.getQuestionOperator(questionIndex, array)}
                     </div>
                 );
             } 
@@ -148,7 +185,7 @@ class Edit extends React.Component {
                 return (
                     <div className="questionsWrap" style={{ padding: 30 }} key={questionIndex}>
                         <p>
-                            <span style={{position: 'absolute' }}>Q{questionIndex}</span>
+                            <span style={{position: 'absolute' }}>Q{questionIndex + 1}</span>
                             <span style={{ marginLeft: 32 }}>{question.title}</span>
                         </p>
                         <Checkbox.Group>
@@ -159,7 +196,7 @@ class Edit extends React.Component {
                             })}
                         </Checkbox.Group>
                         <div className="addOption" style={{ width: '95%', height: 28, margin: '8px 32px' }} onClick={() => this.handleAddOption(questionIndex)}></div>
-                        {this.getQuestionOperator()}
+                        {this.getQuestionOperator(questionIndex, array)}
                     </div>
                 );
             }
@@ -167,19 +204,19 @@ class Edit extends React.Component {
                 return (
                     <div className="questionsWrap" style={{ padding: 30 }}  key={questionIndex}>
                         <p>
-                            <span style={{ position: 'absolute' }}>Q{questionIndex}</span>
+                            <span style={{ position: 'absolute' }}>Q{questionIndex + 1}</span>
                             <span style={{ marginLeft: 32 }}>{question.title}</span>
                         </p>
                         <div style={{ margin: '8px 32px' }}>
                             <TextArea rows={5} cols={10}/>
                         </div>
                         <Checkbox style={radioStyle} checked={question.required}>此题是否必填</Checkbox>
-                        {this.getQuestionOperator()}
+                        {this.getQuestionOperator(questionIndex, array)}
                     </div>
                 );
             }
             else {
-                return <div></div>;
+                return null;
             }
         })
     }

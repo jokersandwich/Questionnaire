@@ -1,5 +1,5 @@
 import React from 'react';
-import { DatePicker, Button, Input, Radio, Checkbox } from 'antd';
+import { DatePicker, Button, Input, Radio, Checkbox, Icon } from 'antd';
 import style from './Edit.css';
 
 class Edit extends React.Component {
@@ -11,18 +11,21 @@ class Edit extends React.Component {
         this.handleShiftQuestion = this.handleShiftQuestion.bind(this);
         this.handleCopyQuestion = this.handleCopyQuestion.bind(this);
         this.handleRemoveQuestion = this.handleRemoveQuestion.bind(this);
+        this.handleQuestionChange = this.handleQuestionChange.bind(this);
         this.handleAddOption = this.handleAddOption.bind(this);
+        this.handleRemoveOption = this.handleRemoveOption.bind(this);
+        this.handleOptionChange = this.handleOptionChange.bind(this);
+        this.handleTextChange = this.handleTextChange.bind(this);
+        this.handleTextRequire = this.handleTextRequire.bind(this);
         this.handleAddQuestion = this.handleAddQuestion.bind(this);
         this.handleAddRadio = this.handleAddRadio.bind(this);
         this.handleAddCheckBox = this.handleAddCheckBox.bind(this);
         this.handleAddTextArea = this.handleAddTextArea.bind(this);
         this.handleDatePick = this.handleDatePick.bind(this);
         this.state = {
-            id: '',
             title: '这里是标题',
             questions: [{
                 type: 'radio',
-                id: '1',
                 title: '单选题',
                 options: [{
                     text: '选项一'
@@ -35,7 +38,6 @@ class Edit extends React.Component {
                 }]
             }, {
                 type: 'checkBox',
-                id: '2',
                 title: '多选题',
                 options: [{
                     text: '选项一'
@@ -48,8 +50,8 @@ class Edit extends React.Component {
                 }]
             }, {
                 type: 'textArea',
-                id: '3',
                 title: '文本题',
+                text: '',
                 required: false
             }],
             date: '',
@@ -81,12 +83,7 @@ class Edit extends React.Component {
         return (
             this.state.titleEditable ? (
                 <div className="editTitle" style={{ margin: 20, padding: 20, textAlign: 'center' }} onClick={this.handleTitleClick}>
-                    <Input 
-                        style={{ fontSize: 18, fontWeight: 'bold', padding: 30, textAlign: 'center' }} 
-                        value={this.state.title} 
-                        onChange={this.handleTitleChange} 
-                        onBlur={this.handleTitleBlur} 
-                    />
+                    <Input style={{ fontSize: 18, fontWeight: 'bold', padding: 30, textAlign: 'center' }} value={this.state.title} onChange={this.handleTitleChange} onBlur={this.handleTitleBlur} />
                 </div>
             ) : (
                 <div className="editTitle" style={{ margin: 20, padding: 20, textAlign: 'center' }} onClick={this.handleTitleClick}>
@@ -108,7 +105,9 @@ class Edit extends React.Component {
     handleCopyQuestion(questionIndex) {
         let { questions } = this.state;
         let copy = Object.assign({}, questions[questionIndex]);
-        copy.options = copy.options.slice(0);
+        if (questions[questionIndex].type !== 'textArea') {
+            copy.options = copy.options.slice(0);
+        }
         questions.splice(questionIndex + 1, 0, copy);
         this.setState({
             questions: questions
@@ -144,10 +143,50 @@ class Edit extends React.Component {
         );
     }
 
-    handleAddOption(questionIndex) {
-        const newOption = { text: '新选项' };
+    handleQuestionChange(e, questionIndex) {
         let { questions } = this.state;
+        questions[questionIndex].title = e.target.value;
+        this.setState({
+            questions: questions
+        });
+    }
+
+    handleAddOption(questionIndex) {
+        let { questions } = this.state;
+        const newOption = { text: '新选项' };
         questions[questionIndex].options.push(newOption);
+        this.setState({
+            questions: questions
+        });
+    }
+
+    handleRemoveOption(questionIndex, optionIndex) {
+        let { questions } = this.state;
+        questions[questionIndex].options.splice(optionIndex, 1);
+        this.setState({
+            questions: questions
+        });
+    }
+
+    handleOptionChange(e, questionIndex, optionIndex) {
+        let { questions } = this.state;
+        questions[questionIndex].options[optionIndex].text = e.target.value;
+        this.setState({
+            questoins: questions
+        });
+    }
+
+    handleTextChange(e, questionIndex) {
+        let { questions } = this.state;
+        questions[questionIndex].text = e.target.value;
+        this.setState({
+            questions: questions
+        });
+    }
+
+    handleTextRequire(e, questionIndex) {
+        let { questions } = this.state;
+        questions[questionIndex].required = e.target.checked;
         this.setState({
             questions: questions
         });
@@ -156,62 +195,50 @@ class Edit extends React.Component {
     getQuestions() {
         let questions = this.state.questions;
         const { TextArea } = Input;
-        const radioStyle = {
-            display: 'block',
-            height: '28px',
-            lineHeight: '28px',
-            marginLeft: '32px'
-        };
         return questions.map((question, questionIndex, array) => {
             if (question.type === 'radio') {
                 return (
                     <div className="questionsWrap" style={{ padding: 30 }} key={questionIndex}>
-                        <p>
-                            <span style={{ position: 'absolute' }}>Q{questionIndex + 1}</span>
-                            <span style={{ marginLeft: 32 }}>{question.title}</span>
-                        </p>
-                        <Radio.Group>
-                            {question.options.map((option, optionIndex) => {
-                                return (
-                                    <Radio style={radioStyle} value={option.text} key={optionIndex}>{option.text}</Radio>
-                                );
-                            })}
-                        </Radio.Group>
-                        <div className="addOption" style={{ width: '95%', height: 28, margin: '8px 32px' }} onClick={() => this.handleAddOption(questionIndex)}></div>
+                        <span>Q{questionIndex + 1}</span>
+                        <Input value={question.title} style={{ borderStyle: 'none', width: '97%', marginLeft: 3 }} onChange={(e) => this.handleQuestionChange(e, questionIndex)} />
+                        {question.options.map((option,optionIndex) => {
+                            return (
+                                <div style={{ margin: '8px 0' }} key={optionIndex}>
+                                    <Icon type="close" className="deleteOption" style={{ display: 'inline-block', marginRight: 8 }} onClick={() => this.handleRemoveOption(questionIndex, optionIndex)}/>
+                                    <Input value={option.text} style={{ borderStyle: 'none', width: '20%' }} onChange={(e) => this.handleOptionChange(e, questionIndex, optionIndex)} />
+                                </div>
+                            );
+                        })}
+                        <div className="addOption" style={{ width: '20%', height: 28, margin: '8px 20px' }} onClick={() => this.handleAddOption(questionIndex)}></div>
                         {this.getQuestionOperator(questionIndex, array)}
                     </div>
                 );
-            } 
-            else if (question.type === 'checkBox') {
+            } else if (question.type === 'checkBox') {
                 return (
                     <div className="questionsWrap" style={{ padding: 30 }} key={questionIndex}>
-                        <p>
-                            <span style={{position: 'absolute' }}>Q{questionIndex + 1}</span>
-                            <span style={{ marginLeft: 32 }}>{question.title}</span>
-                        </p>
-                        <Checkbox.Group>
-                            {question.options.map((option, optionIndex) => {
-                                return (
-                                    <Checkbox style={radioStyle} value={option.text} key={optionIndex}>{option.text}</Checkbox>
-                                );
-                            })}
-                        </Checkbox.Group>
-                        <div className="addOption" style={{ width: '95%', height: 28, margin: '8px 32px' }} onClick={() => this.handleAddOption(questionIndex)}></div>
+                        <span>Q{questionIndex + 1}</span>
+                        <Input value={question.title} style={{ borderStyle: 'none', width: '97%', marginLeft: 3 }} onChange={(e) => this.handleQuestionChange(e, questionIndex)} />
+                        {question.options.map((option,optionIndex) => {
+                            return (
+                                <div style={{ margin: '8px 0' }} key={optionIndex}>
+                                    <Icon type="close" className="deleteOption" style={{ display: 'inline-block', marginRight: 8 }} onClick={() => this.handleRemoveOption(questionIndex, optionIndex)}/>
+                                    <Input value={option.text} style={{ borderStyle: 'none', width: '20%' }} onChange={(e) => this.handleOptionChange(e, questionIndex, optionIndex)} />
+                                </div>
+                            );
+                        })}
+                        <div className="addOption" style={{ width: '20%', height: 28, margin: '8px 20px' }} onClick={() => this.handleAddOption(questionIndex)}></div>
                         {this.getQuestionOperator(questionIndex, array)}
                     </div>
                 );
-            }
-            else if (question.type === 'textArea' ) {
+            } else if (question.type === 'textArea' ) {
                 return (
                     <div className="questionsWrap" style={{ padding: 30 }}  key={questionIndex}>
-                        <p>
-                            <span style={{ position: 'absolute' }}>Q{questionIndex + 1}</span>
-                            <span style={{ marginLeft: 32 }}>{question.title}</span>
-                        </p>
-                        <div style={{ margin: '8px 32px' }}>
-                            <TextArea rows={5} cols={10}/>
+                        <span>Q{questionIndex + 1}</span>
+                        <Input value={question.title} style={{ borderStyle: 'none', width: '97%', marginLeft: 3 }} onChange={(e) => this.handleQuestionChange(e, questionIndex)} />
+                        <div style={{ margin: '16px 20px' }}>
+                            <TextArea rows={5} value={question.text} onChange={(e) => this.handleTextChange(e, questionIndex)} />
                         </div>
-                        <Checkbox style={radioStyle} checked={question.required}>此题是否必填</Checkbox>
+                        <Checkbox checked={question.required} style={{ margin: '0 20px' }} onChange={(e) => this.handleTextRequire(e, questionIndex)}>此题是否必填</Checkbox>
                         {this.getQuestionOperator(questionIndex, array)}
                     </div>
                 );
@@ -231,7 +258,6 @@ class Edit extends React.Component {
     handleAddRadio() {
         const newQuestion = {
             type: 'radio',
-            id: '1',
             title: '单选题',
             options: [{
                 text: '选项一'
@@ -252,7 +278,6 @@ class Edit extends React.Component {
     handleAddCheckBox() {
         const newQuestion = {
             type: 'checkBox',
-            id: '2',
             title: '多选题',
             options: [{
                 text: '选项一'
@@ -273,8 +298,8 @@ class Edit extends React.Component {
     handleAddTextArea() {
         const newQuestion = {
             type: 'textArea',
-            id: '3',
             title: '文本题',
+            text: '',
             required: false
         };
         this.setState((prevState) => ({

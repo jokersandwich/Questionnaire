@@ -2,63 +2,38 @@ import React from 'react';
 import { DatePicker, Button, Input, Radio, Checkbox, Icon } from 'antd';
 import style from './Edit.css';
 
+const list = localStorage.list ? JSON.parse(localStorage.list) : [];
+const initialQuestionnaire = {
+    title: '这里是标题',
+    date: '',
+    stage: '',
+    questions: [],
+    titleEditable: false,
+    addAreaVisible: false
+};
+
 class Edit extends React.Component {
     constructor(props) {
         super(props);
         this.handleTitleClick = this.handleTitleClick.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleTitleBlur = this.handleTitleBlur.bind(this);
-        this.handleShiftQuestion = this.handleShiftQuestion.bind(this);
-        this.handleCopyQuestion = this.handleCopyQuestion.bind(this);
-        this.handleRemoveQuestion = this.handleRemoveQuestion.bind(this);
-        this.handleQuestionChange = this.handleQuestionChange.bind(this);
-        this.handleAddOption = this.handleAddOption.bind(this);
-        this.handleRemoveOption = this.handleRemoveOption.bind(this);
-        this.handleOptionChange = this.handleOptionChange.bind(this);
-        this.handleTextChange = this.handleTextChange.bind(this);
-        this.handleTextRequire = this.handleTextRequire.bind(this);
         this.handleAddQuestion = this.handleAddQuestion.bind(this);
         this.handleAddRadio = this.handleAddRadio.bind(this);
         this.handleAddCheckBox = this.handleAddCheckBox.bind(this);
         this.handleAddTextArea = this.handleAddTextArea.bind(this);
+        this.handleQuestionChange = this.handleQuestionChange.bind(this);
+        this.handleShiftQuestion = this.handleShiftQuestion.bind(this);
+        this.handleCopyQuestion = this.handleCopyQuestion.bind(this);
+        this.handleRemoveQuestion = this.handleRemoveQuestion.bind(this);
+        this.handleOptionChange = this.handleOptionChange.bind(this);
+        this.handleAddOption = this.handleAddOption.bind(this);
+        this.handleRemoveOption = this.handleRemoveOption.bind(this);
+        this.handleTextChange = this.handleTextChange.bind(this);
+        this.handleTextRequire = this.handleTextRequire.bind(this);
         this.handleDatePick = this.handleDatePick.bind(this);
-        this.state = {
-            title: '这里是标题',
-            questions: [{
-                type: 'radio',
-                title: '单选题',
-                options: [{
-                    text: '选项一'
-                }, {
-                    text: '选项二'
-                }, {
-                    text: '选项三'
-                }, {
-                    text: '选项四'
-                }]
-            }, {
-                type: 'checkBox',
-                title: '多选题',
-                options: [{
-                    text: '选项一'
-                }, {
-                    text: '选项二'
-                }, {
-                    text: '选项三'
-                }, {
-                    text: '选项四'
-                }]
-            }, {
-                type: 'textArea',
-                title: '文本题',
-                text: '',
-                required: false
-            }],
-            date: '',
-            stage: '',
-            titleEditable: false,
-            addAreaVisible: false
-        }
+        this.handleSaveQuestionnaire = this.handleSaveQuestionnaire.bind(this);
+        this.state = list[0] ? list[0] : initialQuestionnaire;
     }
 
     handleTitleClick() {
@@ -79,18 +54,55 @@ class Edit extends React.Component {
         })
     }
 
-    getTitle() {
-        return (
-            this.state.titleEditable ? (
-                <div className="editTitle" style={{ margin: 20, padding: 20, textAlign: 'center' }} onClick={this.handleTitleClick}>
-                    <Input style={{ fontSize: 18, fontWeight: 'bold', padding: 30, textAlign: 'center' }} value={this.state.title} onChange={this.handleTitleChange} onBlur={this.handleTitleBlur} />
-                </div>
-            ) : (
-                <div className="editTitle" style={{ margin: 20, padding: 20, textAlign: 'center' }} onClick={this.handleTitleClick}>
-                    <h2><strong>{this.state.title}</strong></h2>
-                </div>
-            )
-        );
+    handleAddQuestion() {
+        this.setState({
+            addAreaVisible: !this.state.addAreaVisible
+        })
+    }
+
+    handleAddRadio() {
+        const newQuestion = {
+            type: 'radio',
+            title: '单选题',
+            options: [{text: '选项一'}, {text: '选项二'}, {text: '选项三'}, {text: '选项四'}]
+        };
+        this.setState((prevState) => ({
+            questions: prevState.questions.concat(newQuestion),
+            addAreaVisible: false
+        }));
+    }
+
+    handleAddCheckBox() {
+        const newQuestion = {
+            type: 'checkBox',
+            title: '多选题',
+            options: [{text: '选项一'}, {text: '选项二'}, {text: '选项三'}, {text: '选项四'}]
+        };
+        this.setState((prevState) => ({
+            questions: prevState.questions.concat(newQuestion),
+            addAreaVisible: false
+        }));
+    }
+
+    handleAddTextArea() {
+        const newQuestion = {
+            type: 'textArea',
+            title: '文本题',
+            text: '',
+            required: false
+        };
+        this.setState((prevState) => ({
+            questions: prevState.questions.concat(newQuestion),
+            addAreaVisible: false
+        }));
+    }
+
+    handleQuestionChange(e, questionIndex) {
+        let { questions } = this.state;
+        questions[questionIndex].title = e.target.value;
+        this.setState({
+            questions: questions
+        });
     }
 
     handleShiftQuestion(questionIndex, num) {
@@ -122,32 +134,11 @@ class Edit extends React.Component {
         });
     }
 
-    getQuestionOperator(questionIndex, array) {
-        return (
-            <div>
-                <p style={{ float: 'right' }}>
-                    {questionIndex === 0 ? (
-                        null
-                    ) : (
-                        <span className="questionOperate" style={{ marginLeft: 8 }} onClick={() => this.handleShiftQuestion(questionIndex, -1)}>上移</span>
-                    )}
-                    {questionIndex === array.length - 1 ? (
-                        null
-                    ) : (
-                        <span className="questionOperate" style={{ marginLeft: 8 }} onClick={() => this.handleShiftQuestion(questionIndex, 1)}>下移</span>
-                    )}
-                    <span className="questionOperate" style={{ marginLeft: 8 }} onClick={() => this.handleCopyQuestion(questionIndex)}>复用</span>
-                    <span className="questionOperate" style={{ marginLeft: 8 }} onClick={() => this.handleRemoveQuestion(questionIndex)}>删除</span>
-                </p>
-            </div>
-        );
-    }
-
-    handleQuestionChange(e, questionIndex) {
+    handleOptionChange(e, questionIndex, optionIndex) {
         let { questions } = this.state;
-        questions[questionIndex].title = e.target.value;
+        questions[questionIndex].options[optionIndex].text = e.target.value;
         this.setState({
-            questions: questions
+            questoins: questions
         });
     }
 
@@ -168,14 +159,6 @@ class Edit extends React.Component {
         });
     }
 
-    handleOptionChange(e, questionIndex, optionIndex) {
-        let { questions } = this.state;
-        questions[questionIndex].options[optionIndex].text = e.target.value;
-        this.setState({
-            questoins: questions
-        });
-    }
-
     handleTextChange(e, questionIndex) {
         let { questions } = this.state;
         questions[questionIndex].text = e.target.value;
@@ -190,6 +173,49 @@ class Edit extends React.Component {
         this.setState({
             questions: questions
         });
+    }
+
+    handleDatePick(date, dateString) {
+        this.setState({
+            date: dateString
+        })
+    }
+
+    handleSaveQuestionnaire() { //  每次都会添加一个新问卷
+        let restInformation = { key: Date.now(), stage: '未发布' };
+        let questionnaire = this.state.key ? (
+            this.state
+        ) : (
+            Object.assign({}, this.state, restInformation)
+        );
+        list.push(questionnaire);
+        localStorage.list = JSON.stringify(list);
+    }
+
+    getTitle() {
+        return (
+            this.state.titleEditable ? (
+                <div className="editTitle" style={{ margin: 20, padding: 20, textAlign: 'center' }} onClick={this.handleTitleClick}>
+                    <Input style={{ fontSize: 18, fontWeight: 'bold', padding: 30, textAlign: 'center' }} value={this.state.title} onChange={this.handleTitleChange} onBlur={this.handleTitleBlur} />
+                </div>
+            ) : (
+                <div className="editTitle" style={{ margin: 20, padding: 20, textAlign: 'center' }} onClick={this.handleTitleClick}>
+                    <h2><strong>{this.state.title}</strong></h2>
+                </div>
+            )
+        );
+    }
+
+    getAddArea() {
+        return (
+            this.state.addAreaVisible ? (
+                <div style={{ padding: 30, textAlign: 'center', border: '1px solid #eee' }}>
+                    <Button icon="check-circle-o" size="large" onClick={this.handleAddRadio}>单选</Button>
+                    <Button icon="check-square-o" size="large" style={{ marginLeft: 16 }} onClick={this.handleAddCheckBox}>多选</Button>
+                    <Button icon="file-text" size="large" style={{ marginLeft: 16 }} onClick={this.handleAddTextArea}>文本</Button>
+                </div>
+            ) : ''
+        );
     }
 
     getQuestions() {
@@ -249,81 +275,25 @@ class Edit extends React.Component {
         })
     }
 
-    handleAddQuestion() {
-        this.setState({
-            addAreaVisible: !this.state.addAreaVisible
-        })
-    }
-
-    handleAddRadio() {
-        const newQuestion = {
-            type: 'radio',
-            title: '单选题',
-            options: [{
-                text: '选项一'
-            }, {
-                text: '选项二'
-            }, {
-                text: '选项三'
-            }, {
-                text: '选项四'
-            }]
-        };
-        this.setState((prevState) => ({
-            questions: prevState.questions.concat(newQuestion),
-            addAreaVisible: false
-        }));
-    }
-
-    handleAddCheckBox() {
-        const newQuestion = {
-            type: 'checkBox',
-            title: '多选题',
-            options: [{
-                text: '选项一'
-            }, {
-                text: '选项二'
-            }, {
-                text: '选项三'
-            }, {
-                text: '选项四'
-            }]
-        };
-        this.setState((prevState) => ({
-            questions: prevState.questions.concat(newQuestion),
-            addAreaVisible: false
-        }));
-    }
-
-    handleAddTextArea() {
-        const newQuestion = {
-            type: 'textArea',
-            title: '文本题',
-            text: '',
-            required: false
-        };
-        this.setState((prevState) => ({
-            questions: prevState.questions.concat(newQuestion),
-            addAreaVisible: false
-        }));
-    }
-
-    getAddArea() {
+    getQuestionOperator(questionIndex, array) {
         return (
-            this.state.addAreaVisible ? (
-                <div style={{ padding: 30, textAlign: 'center', border: '1px solid #eee' }}>
-                    <Button icon="check-circle-o" size="large" onClick={this.handleAddRadio}>单选</Button>
-                    <Button icon="check-square-o" size="large" style={{ marginLeft: 16 }} onClick={this.handleAddCheckBox}>多选</Button>
-                    <Button icon="file-text" size="large" style={{ marginLeft: 16 }} onClick={this.handleAddTextArea}>文本</Button>
-                </div>
-            ) : ''
+            <div>
+                <p style={{ float: 'right' }}>
+                    {questionIndex === 0 ? (
+                        null
+                    ) : (
+                        <span className="questionOperate" style={{ marginLeft: 8 }} onClick={() => this.handleShiftQuestion(questionIndex, -1)}>上移</span>
+                    )}
+                    {questionIndex === array.length - 1 ? (
+                        null
+                    ) : (
+                        <span className="questionOperate" style={{ marginLeft: 8 }} onClick={() => this.handleShiftQuestion(questionIndex, 1)}>下移</span>
+                    )}
+                    <span className="questionOperate" style={{ marginLeft: 8 }} onClick={() => this.handleCopyQuestion(questionIndex)}>复用</span>
+                    <span className="questionOperate" style={{ marginLeft: 8 }} onClick={() => this.handleRemoveQuestion(questionIndex)}>删除</span>
+                </p>
+            </div>
         );
-    }
-
-    handleDatePick(date, dateString) {
-        this.setState({
-            date: dateString
-        })
     }
 
     getFooter() {
@@ -336,7 +306,7 @@ class Edit extends React.Component {
                     <span style={{ marginLeft: 16 }}>你选择的日期是： {this.state.date}</span>
                 </div>
                 <div style={{ float: 'right' }}>
-                    <Button>保存问卷</Button>
+                    <Button onClick={this.handleSaveQuestionnaire}>保存问卷</Button>
                     <Button type="primary" style={{ marginLeft: 16 }}>发布问卷</Button>
                 </div>
             </div>

@@ -10,7 +10,7 @@ ReactDOM.render(
     <BrowserRouter>
         <div style={{ background: '#eee', height: '100%' }}>
             <App />
-            <div style={{ width: '80%', margin: '80px auto', padding: '20px 40px 40px 40px', background: '#fff' }}>
+            <div style={{ width: '70%', margin: '80px auto', padding: '20px 40px 40px 40px', background: '#fff' }}>
                 <Switch>
                     <Route exact path="/" component={Home} />
                     <Route exact path="/edit" component={Edit} />

@@ -201,7 +201,7 @@ class Edit extends React.Component {
         });
     }
 
-    handleReleaseQuestionnaire() {
+    handleReleaseQuestionnaire() {  // 未修改stage
         let me = this;
         if (this.state.questions.length === 0) {
             Modal.warning({
@@ -217,6 +217,8 @@ class Edit extends React.Component {
                 content: '截止日期为 ' + this.state.date,
                 onOk() {
                     me.saveQuestionnaire();
+                    me.props.history.push('/');
+                    window.location.reload(); 
                 },
                 onCancel() {
                     console.log('cancel');

@@ -1,5 +1,5 @@
 import React from 'react';
-import { DatePicker, Button, Input, Radio, Checkbox, Icon } from 'antd';
+import { DatePicker, Button, Input, Radio, Checkbox, Icon, Modal } from 'antd';
 import style from './Edit.css';
 
 const list = localStorage.list ? JSON.parse(localStorage.list) : [];
@@ -32,8 +32,10 @@ class Edit extends React.Component {
         this.handleTextChange = this.handleTextChange.bind(this);
         this.handleTextRequire = this.handleTextRequire.bind(this);
         this.handleDatePick = this.handleDatePick.bind(this);
+        this.saveQuestionnaire = this.saveQuestionnaire.bind(this);
         this.handleSaveQuestionnaire = this.handleSaveQuestionnaire.bind(this);
-        this.state = list[0] ? list[0] : initialQuestionnaire;
+        this.handleReleaseQuestionnaire = this.handleReleaseQuestionnaire.bind(this);
+        this.state = initialQuestionnaire;
     }
 
     handleTitleClick() {
@@ -181,8 +183,8 @@ class Edit extends React.Component {
         })
     }
 
-    handleSaveQuestionnaire() { //  每次都会添加一个新问卷
-        let restInformation = { key: Date.now(), stage: '未发布' };
+    saveQuestionnaire() { //  每次都会添加一个新问卷
+        let restInformation = { key: Date.now(), stage: '未发布' };    //  未做stage判断
         let questionnaire = this.state.key ? (
             this.state
         ) : (
@@ -190,6 +192,37 @@ class Edit extends React.Component {
         );
         list.push(questionnaire);
         localStorage.list = JSON.stringify(list);
+    }
+
+    handleSaveQuestionnaire() {
+        this.saveQuestionnaire();
+        Modal.success({
+            title: '保存成功'
+        });
+    }
+
+    handleReleaseQuestionnaire() {
+        let me = this;
+        if (this.state.questions.length === 0) {
+            Modal.warning({
+                title: '请添加至少一个问题'
+            });
+        } else if (this.state.date === '') {
+            Modal.warning({
+                title: '请选择截止日期'
+            });
+        } else {
+            Modal.confirm({
+                title: '确定发布问卷吗？',
+                content: '截止日期为 ' + this.state.date,
+                onOk() {
+                    me.saveQuestionnaire();
+                },
+                onCancel() {
+                    console.log('cancel');
+                }
+            });
+        }
     }
 
     getTitle() {
@@ -303,11 +336,10 @@ class Edit extends React.Component {
                 <div style={{ float: 'left' }}>
                     <span>问卷截止日期：</span>
                     <DatePicker onChange={this.handleDatePick} disabledDate={disabledDate}/>
-                    <span style={{ marginLeft: 16 }}>你选择的日期是： {this.state.date}</span>
                 </div>
                 <div style={{ float: 'right' }}>
                     <Button onClick={this.handleSaveQuestionnaire}>保存问卷</Button>
-                    <Button type="primary" style={{ marginLeft: 16 }}>发布问卷</Button>
+                    <Button type="primary" style={{ marginLeft: 16 }} onClick={this.handleReleaseQuestionnaire}>发布问卷</Button>
                 </div>
             </div>
         );

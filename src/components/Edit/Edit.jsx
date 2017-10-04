@@ -1,6 +1,6 @@
 import React from 'react';
 import { DatePicker, Button, Input, Checkbox, Icon, Modal } from 'antd';
-import style from './Edit.css';
+import './Edit.css';
 
 const list = localStorage.list ? JSON.parse(localStorage.list) : [];
 const initialQuestionnaire = {

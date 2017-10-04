@@ -3,7 +3,7 @@ import { Input, Button, Radio, Checkbox, Modal } from 'antd';
 
 const mockData = {
     key: '-1',
-    title: '问卷一',
+    title: '问卷二',
     date: '2017/10/10',
     stage: '未发布',
     questions: [{

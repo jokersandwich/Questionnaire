@@ -1,5 +1,5 @@
 import React from 'react';
-import { DatePicker, Button, Input, Radio, Checkbox, Icon, Modal } from 'antd';
+import { DatePicker, Button, Input, Checkbox, Icon, Modal } from 'antd';
 import style from './Edit.css';
 
 const list = localStorage.list ? JSON.parse(localStorage.list) : [];
@@ -20,7 +20,7 @@ class Edit extends React.Component {
         this.handleTitleBlur = this.handleTitleBlur.bind(this);
         this.handleAddQuestion = this.handleAddQuestion.bind(this);
         this.handleAddRadio = this.handleAddRadio.bind(this);
-        this.handleAddCheckBox = this.handleAddCheckBox.bind(this);
+        this.handleAddCheckbox = this.handleAddCheckbox.bind(this);
         this.handleAddTextArea = this.handleAddTextArea.bind(this);
         this.handleQuestionChange = this.handleQuestionChange.bind(this);
         this.handleShiftQuestion = this.handleShiftQuestion.bind(this);
@@ -74,9 +74,9 @@ class Edit extends React.Component {
         }));
     }
 
-    handleAddCheckBox() {
+    handleAddCheckbox() {
         const newQuestion = {
-            type: 'checkBox',
+            type: 'checkbox',
             title: '多选题',
             options: [{text: '选项一'}, {text: '选项二'}, {text: '选项三'}, {text: '选项四'}]
         };
@@ -88,7 +88,7 @@ class Edit extends React.Component {
 
     handleAddTextArea() {
         const newQuestion = {
-            type: 'textArea',
+            type: 'textarea',
             title: '文本题',
             text: '',
             required: false
@@ -119,7 +119,7 @@ class Edit extends React.Component {
     handleCopyQuestion(questionIndex) {
         let { questions } = this.state;
         let copy = Object.assign({}, questions[questionIndex]);
-        if (questions[questionIndex].type !== 'textArea') {
+        if (questions[questionIndex].type !== 'textarea') {
             copy.options = copy.options.slice(0);
         }
         questions.splice(questionIndex + 1, 0, copy);
@@ -201,7 +201,7 @@ class Edit extends React.Component {
         });
     }
 
-    handleReleaseQuestionnaire() {  // 未修改stage
+    handleReleaseQuestionnaire() {  //  未修改stage
         let me = this;
         if (this.state.questions.length === 0) {
             Modal.warning({
@@ -218,10 +218,7 @@ class Edit extends React.Component {
                 onOk() {
                     me.saveQuestionnaire();
                     me.props.history.push('/');
-                    window.location.reload(); 
-                },
-                onCancel() {
-                    console.log('cancel');
+                    window.location.reload();   //  刷新list
                 }
             });
         }
@@ -230,11 +227,11 @@ class Edit extends React.Component {
     getTitle() {
         return (
             this.state.titleEditable ? (
-                <div className="editTitle" style={{ margin: 20, padding: 20, textAlign: 'center' }} onClick={this.handleTitleClick}>
+                <div className="editTitle" style={{ margin: '0 20px 20px 20px', padding: 3, textAlign: 'center' }} onClick={this.handleTitleClick}>
                     <Input style={{ fontSize: 18, fontWeight: 'bold', padding: 30, textAlign: 'center' }} value={this.state.title} onChange={this.handleTitleChange} onBlur={this.handleTitleBlur} />
                 </div>
             ) : (
-                <div className="editTitle" style={{ margin: 20, padding: 20, textAlign: 'center' }} onClick={this.handleTitleClick}>
+                <div className="editTitle" style={{ margin: '0 20px 20px 20px', padding: 20, textAlign: 'center' }} onClick={this.handleTitleClick}>
                     <h2><strong>{this.state.title}</strong></h2>
                 </div>
             )
@@ -246,7 +243,7 @@ class Edit extends React.Component {
             this.state.addAreaVisible ? (
                 <div style={{ padding: 30, textAlign: 'center', border: '1px solid #eee' }}>
                     <Button icon="check-circle-o" size="large" onClick={this.handleAddRadio}>单选</Button>
-                    <Button icon="check-square-o" size="large" style={{ marginLeft: 16 }} onClick={this.handleAddCheckBox}>多选</Button>
+                    <Button icon="check-square-o" size="large" style={{ marginLeft: 16 }} onClick={this.handleAddCheckbox}>多选</Button>
                     <Button icon="file-text" size="large" style={{ marginLeft: 16 }} onClick={this.handleAddTextArea}>文本</Button>
                 </div>
             ) : ''
@@ -274,7 +271,7 @@ class Edit extends React.Component {
                         {this.getQuestionOperator(questionIndex, array)}
                     </div>
                 );
-            } else if (question.type === 'checkBox') {
+            } else if (question.type === 'checkbox') {
                 return (
                     <div className="questionsWrap" style={{ padding: 30 }} key={questionIndex}>
                         <span>Q{questionIndex + 1}</span>
@@ -291,7 +288,7 @@ class Edit extends React.Component {
                         {this.getQuestionOperator(questionIndex, array)}
                     </div>
                 );
-            } else if (question.type === 'textArea' ) {
+            } else if (question.type === 'textarea' ) {
                 return (
                     <div className="questionsWrap" style={{ padding: 30 }}  key={questionIndex}>
                         <span>Q{questionIndex + 1}</span>

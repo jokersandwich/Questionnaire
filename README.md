@@ -15,7 +15,7 @@
 - [antd](https://ant.design/index-cn): 企业级的 UI 设计语言和 React 实现。
 - [g2-react](https://antv.alipay.com/index.html): 专业易用的可视化类库。
 
-## 实际效果图
+## 效果图
 
 （目前只写了 UI 的部分，各页面使用的都是固定数据，之后可能会用 Node 写个后端。）
 

@@ -5,7 +5,7 @@ const mockData = {
     key: '-2',
     title: '问卷二',
     date: '2017/12/30',
-    stage: '未发布',
+    stage: '发布中',
     questions: [{
         type: 'radio',
         title: '你的性别？',
@@ -33,13 +33,13 @@ const mockData = {
     }, {
         type: 'checkbox',
         title: '你使用共享单车的原因在于？',
-        options: [{text: '低碳环保'}, {text: '锻炼身体'}, {text: '出行快捷'}, {text: '喜欢骑行'}, {text: '其它'}],
+        options: [{text: '低碳环保'}, {text: '锻炼身体'}, {text: '出行快捷'}, {text: '现在很流行'}, {text: '喜欢骑行的感觉'}, {text: '其它'}],
         value: [],
         data: []
     }, {
         type: 'checkbox',
         title: '你认为对于共享单车来说，哪些因素比较重要？',
-        options: [{text: '外观设计'}, {text: '舒适度'}, {text: '安全性'}, {text: '便捷性'}, {text: '其它'}],
+        options: [{text: '价格'}, {text: '舒适度'}, {text: '安全性'}, {text: '便捷性'}, {text: '外观设计'}, {text: '其它'}],
         value: [],
         data: []
     }, {
@@ -56,11 +56,11 @@ const mockData = {
 class Fill extends React.Component {
     constructor(props) {
         super(props);
-        this.state = mockData
         this.handleRadioChange = this.handleRadioChange.bind(this);
         this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
         this.handleTextChange = this.handleTextChange.bind(this);
         this.handleSubmitQuestionnaire = this.handleSubmitQuestionnaire.bind(this);
+        this.state = mockData;
     }
 
     handleRadioChange(e, questionIndex) {

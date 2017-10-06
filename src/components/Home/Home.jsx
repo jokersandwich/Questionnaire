@@ -23,6 +23,7 @@ class Home extends React.Component {
         this.handleReset = this.handleReset.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
         this.handleFill = this.handleFill.bind(this);
+        this.handleCheck = this.handleCheck.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.state = {
             dataSource: list
@@ -50,6 +51,12 @@ class Home extends React.Component {
     }
 
     handleFill(index) {
+        const setEditing = Object.assign({}, list[index]);
+        localStorage.editing = JSON.stringify(setEditing);
+        window.location.reload();
+    }
+
+    handleCheck(index) {
         const setEditing = Object.assign({}, list[index]);
         localStorage.editing = JSON.stringify(setEditing);
         window.location.reload();
@@ -96,7 +103,7 @@ class Home extends React.Component {
                         firstButton = <Link to="/fill"><Button onClick={() => this.handleFill(index)}>填写问卷</Button></Link>
                         break;
                     case '已结束':
-                        firstButton = <Link to="/check"><Button>查看数据</Button></Link>
+                        firstButton = <Link to="/check"><Button onClick={() => this.handleCheck(index)}>查看数据</Button></Link>
                         break;
                     default:
                         firstButton = <div></div>

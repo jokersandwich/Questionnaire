@@ -4,7 +4,7 @@ import { Stat } from 'g2';
 import { Button } from 'antd';
 import mockData from '../mockData';
 
-const data = mockData[2];
+const editing = localStorage.editing ? JSON.parse(localStorage.editing) : [];
 const Pie = createG2(chart => {
     chart.coord('theta');
     chart.intervalStack().position(Stat.summary.proportion()).color('选项');
@@ -30,7 +30,7 @@ class Check extends React.Component {
     constructor(props) {
         super(props);
         this.handleReturn = this.handleReturn.bind(this);
-        this.state = data;
+        this.state = editing;
     }
 
     handleReturn() {

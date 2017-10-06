@@ -58,7 +58,8 @@ class Edit extends React.Component {
         const newQuestion = {
             type: 'radio',
             title: '单选题',
-            options: [{text: '选项一'}, {text: '选项二'}, {text: '选项三'}, {text: '选项四'}]
+            options: [{text: '选项一'}, {text: '选项二'}, {text: '选项三'}, {text: '选项四'}],
+            data: []
         };
         this.setState((prevState) => ({
             questions: prevState.questions.concat(newQuestion),
@@ -70,7 +71,8 @@ class Edit extends React.Component {
         const newQuestion = {
             type: 'checkbox',
             title: '多选题',
-            options: [{text: '选项一'}, {text: '选项二'}, {text: '选项三'}, {text: '选项四'}]
+            options: [{text: '选项一'}, {text: '选项二'}, {text: '选项三'}, {text: '选项四'}],
+            data: []
         };
         this.setState((prevState) => ({
             questions: prevState.questions.concat(newQuestion),

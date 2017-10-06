@@ -94,23 +94,28 @@ class Home extends React.Component {
             title: '操作',
             key: 'action',
             render: (text, record, index) => {
-                let firstButton;
+                let prevButton;
                 switch (record.stage) {
                     case '未发布':
-                        firstButton = <Link to="/edit"><Button onClick={() => this.handleEdit(index)}>编辑问卷</Button></Link>
+                        prevButton = <Link to="/edit"><Button onClick={() => this.handleEdit(index)}>编辑问卷</Button></Link>
                         break;
                     case '发布中':
-                        firstButton = <Link to="/fill"><Button onClick={() => this.handleFill(index)}>填写问卷</Button></Link>
+                        prevButton = (
+                            <span>
+                                <Link to="/fill"><Button onClick={() => this.handleFill(index)}>填写问卷</Button></Link>
+                                <Link to="/check"><Button style={{ marginLeft: 8 }} onClick={() => this.handleCheck(index)}>查看数据</Button></Link>
+                            </span>
+                        );
                         break;
                     case '已结束':
-                        firstButton = <Link to="/check"><Button onClick={() => this.handleCheck(index)}>查看数据</Button></Link>
+                        prevButton = <Link to="/check"><Button onClick={() => this.handleCheck(index)}>查看数据</Button></Link>
                         break;
                     default:
-                        firstButton = <div></div>
+                        prevButton = <div></div>
                 }
                 return (
                     <span>
-                        {firstButton}
+                        {prevButton}
                         <Popconfirm title="确定要删除吗?" onConfirm={() => this.handleDelete(record.key, index)}>
                             <Button style={{ marginLeft: 8 }}>删除问卷</Button>
                         </Popconfirm>
@@ -124,9 +129,9 @@ class Home extends React.Component {
                 <Table columns={columns} dataSource={this.state.dataSource} pagination={false} />
                 {/* 两行按钮 */}
                 {/* <Link to="/edit"><Button type="primary" style={{ marginTop: 16, width: '100%', height: '40px' }} onClick={this.handleAdd}>新建问卷</Button></Link>
-                <Button style={{ marginTop: 16, width: '100%', height: '40px' }} onClick={this.handleReset}>重置列表</Button> */}
+                <Button style={{ marginTop: 16, width: '100%', height: '40px' }} onClick={this.handleReset}初始化</Button> */}
                 {/* 一行按钮，左右放 */}
-                <Button style={{ marginTop: 16, width: '49%', height: '40px' }} onClick={this.handleReset}>重置列表</Button>
+                <Button style={{ marginTop: 16, width: '49%', height: '40px' }} onClick={this.handleReset}>初始化</Button>
                 <Link to="/edit"><Button type="primary" style={{ marginTop: 16, marginLeft: '2%', width: '49%', height: '40px' }} onClick={this.handleAdd}>新建问卷</Button></Link>
             </div>
         );

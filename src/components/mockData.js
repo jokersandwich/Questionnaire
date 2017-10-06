@@ -1,5 +1,6 @@
 const mockData = [{
     key: '-1',
+    index: '0',
     title: '问卷一',
     date: '2017/12/30',
     stage: '未发布',
@@ -50,6 +51,7 @@ const mockData = [{
     addAreaVisible: false
 }, {
     key: '-2',
+    index: '1',
     title: '问卷二',
     date: '2017/12/30',
     stage: '发布中',
@@ -100,6 +102,7 @@ const mockData = [{
     addAreaVisible: false
 }, {
     key: '-3',
+    index: '2',
     title: '问卷三',
     date: '2017/9/30',
     stage: '已结束',

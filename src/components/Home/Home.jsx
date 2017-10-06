@@ -20,7 +20,10 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.handleAdd = this.handleAdd.bind(this);
+        this.handleReset = this.handleReset.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
+        this.handleFill = this.handleFill.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
         this.state = {
             dataSource: list
         }
@@ -34,11 +37,22 @@ class Home extends React.Component {
         debugger
     }
 
+    handleReset() {
+        localStorage.list = JSON.stringify(mockData);
+        window.location.reload();
+    }
+
     handleEdit(index) {
         const setEditing = Object.assign({}, list[index]);
         localStorage.editing = JSON.stringify(setEditing);
         window.location.reload();
         debugger
+    }
+
+    handleFill(index) {
+        const setEditing = Object.assign({}, list[index]);
+        localStorage.editing = JSON.stringify(setEditing);
+        window.location.reload();
     }
 
     handleDelete(key, index) {
@@ -79,7 +93,7 @@ class Home extends React.Component {
                         firstButton = <Link to="/edit"><Button onClick={() => this.handleEdit(index)}>编辑问卷</Button></Link>
                         break;
                     case '发布中':
-                        firstButton = <Link to="/fill"><Button>填写问卷</Button></Link>
+                        firstButton = <Link to="/fill"><Button onClick={() => this.handleFill(index)}>填写问卷</Button></Link>
                         break;
                     case '已结束':
                         firstButton = <Link to="/check"><Button>查看数据</Button></Link>
@@ -101,7 +115,12 @@ class Home extends React.Component {
         return (
             <div>
                 <Table columns={columns} dataSource={this.state.dataSource} pagination={false} />
-                <Link to="/edit"><Button type="primary" style={{ marginTop: 16, width: '100%', height: '40px' }} onClick={this.handleAdd}>新建问卷</Button></Link>
+                {/* 两行按钮 */}
+                {/* <Link to="/edit"><Button type="primary" style={{ marginTop: 16, width: '100%', height: '40px' }} onClick={this.handleAdd}>新建问卷</Button></Link>
+                <Button style={{ marginTop: 16, width: '100%', height: '40px' }} onClick={this.handleReset}>重置列表</Button> */}
+                {/* 一行按钮，左右放 */}
+                <Button style={{ marginTop: 16, width: '49%', height: '40px' }} onClick={this.handleReset}>重置列表</Button>
+                <Link to="/edit"><Button type="primary" style={{ marginTop: 16, marginLeft: '2%', width: '49%', height: '40px' }} onClick={this.handleAdd}>新建问卷</Button></Link>
             </div>
         );
     }

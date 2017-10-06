@@ -2,7 +2,8 @@ import React from 'react';
 import { Input, Button, Radio, Checkbox, Modal } from 'antd';
 import mockData from '../mockData';
 
-const data = mockData[1];
+// const data = mockData[1];
+const editing = localStorage.editing ? JSON.parse(localStorage.editing) : [];
 
 class Fill extends React.Component {
     constructor(props) {
@@ -11,7 +12,7 @@ class Fill extends React.Component {
         this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
         this.handleTextChange = this.handleTextChange.bind(this);
         this.handleSubmitQuestionnaire = this.handleSubmitQuestionnaire.bind(this);
-        this.state = data;
+        this.state = editing;
     }
 
     handleRadioChange(e, questionIndex) {

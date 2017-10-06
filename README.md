@@ -17,7 +17,7 @@
 
 ## 效果图
 
-（目前只写了 UI 的部分，各页面使用的都是固定数据，之后可能会用 Node 写个后端。）
+（目前数据存在 LocalStorage 中，还在写。之后如果有空也可能换成 Node 后端。）
 
 ![image](http://ot8ooevw7.bkt.clouddn.com/%E9%97%AE%E5%8D%B7.jpg)
 

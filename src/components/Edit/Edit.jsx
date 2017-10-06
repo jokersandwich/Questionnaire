@@ -3,14 +3,7 @@ import { DatePicker, Button, Input, Checkbox, Icon, Modal } from 'antd';
 import './Edit.css';
 
 const list = localStorage.list ? JSON.parse(localStorage.list) : [];
-const initialQuestionnaire = {
-    title: '这里是标题',
-    date: '',
-    stage: '',
-    questions: [],
-    titleEditable: false,
-    addAreaVisible: false
-};
+const editing = localStorage.editing ? JSON.parse(localStorage.editing) : [];
 
 class Edit extends React.Component {
     constructor(props) {
@@ -32,10 +25,9 @@ class Edit extends React.Component {
         this.handleTextChange = this.handleTextChange.bind(this);
         this.handleTextRequire = this.handleTextRequire.bind(this);
         this.handleDatePick = this.handleDatePick.bind(this);
-        this.saveQuestionnaire = this.saveQuestionnaire.bind(this);
         this.handleSaveQuestionnaire = this.handleSaveQuestionnaire.bind(this);
         this.handleReleaseQuestionnaire = this.handleReleaseQuestionnaire.bind(this);
-        this.state = initialQuestionnaire;
+        this.state = editing;
     }
 
     handleTitleClick() {
@@ -183,25 +175,17 @@ class Edit extends React.Component {
         })
     }
 
-    saveQuestionnaire() { //  每次都会添加一个新问卷
-        let restInformation = { key: Date.now(), stage: '未发布' };    //  未做stage判断
-        let questionnaire = this.state.key ? (
-            this.state
-        ) : (
-            Object.assign({}, this.state, restInformation)
-        );
-        list.push(questionnaire);
-        localStorage.list = JSON.stringify(list);
-    }
-
     handleSaveQuestionnaire() {
-        this.saveQuestionnaire();
+        const index = this.state.index;
+        list[index] = Object.assign({}, this.state);
+        localStorage.list = JSON.stringify(list);
+        debugger
         Modal.success({
             title: '保存成功'
         });
     }
 
-    handleReleaseQuestionnaire() {  //  未修改stage
+    handleReleaseQuestionnaire() {
         let me = this;
         if (this.state.questions.length === 0) {
             Modal.warning({
@@ -216,9 +200,12 @@ class Edit extends React.Component {
                 title: '确定发布问卷吗？',
                 content: '截止日期为 ' + this.state.date,
                 onOk() {
-                    me.saveQuestionnaire();
+                    const index = me.state.index;
+                    list[index] = Object.assign({}, {...me.state, stage: '发布中'});
+                    localStorage.list = JSON.stringify(list);
+                    window.location.reload();
                     me.props.history.push('/');
-                    window.location.reload();   //  刷新list
+                    debugger
                 }
             });
         }

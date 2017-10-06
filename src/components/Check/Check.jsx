@@ -5,7 +5,6 @@ import { Button } from 'antd';
 import mockData from '../mockData';
 
 const data = mockData[2];
-
 const Pie = createG2(chart => {
     chart.coord('theta');
     chart.intervalStack().position(Stat.summary.proportion()).color('选项');
@@ -49,7 +48,7 @@ class Check extends React.Component {
     getCharts() {
         let questions = this.state.questions;
         return questions.map((question, questionIndex) => {
-            if (question.type == 'radio') {
+            if (question.type === 'radio') {
                 return (
                     <div className="questionsWrap" style={{ padding: 30 }} key={questionIndex}>
                         <span>Q{questionIndex + 1}</span>
@@ -59,7 +58,7 @@ class Check extends React.Component {
                         </div>
                     </div>
                 );
-            } else if (question.type == 'checkbox') {
+            } else if (question.type === 'checkbox') {
                 return (
                     <div className="questionsWrap" style={{ padding: 30 }} key={questionIndex}>
                         <span>Q{questionIndex + 1}</span>

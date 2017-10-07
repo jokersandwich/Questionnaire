@@ -181,7 +181,6 @@ class Edit extends React.Component {
         const index = this.state.index;
         list[index] = Object.assign({}, this.state);
         localStorage.list = JSON.stringify(list);
-        debugger
         Modal.success({
             title: '保存成功'
         });
@@ -189,6 +188,7 @@ class Edit extends React.Component {
 
     handleReleaseQuestionnaire() {
         let me = this;
+
         if (this.state.questions.length === 0) {
             Modal.warning({
                 title: '请添加至少一个问题'
@@ -207,7 +207,6 @@ class Edit extends React.Component {
                     localStorage.list = JSON.stringify(list);
                     window.location.reload();
                     me.props.history.push('/');
-                    debugger
                 }
             });
         }
@@ -242,6 +241,7 @@ class Edit extends React.Component {
     getQuestions() {
         let questions = this.state.questions;
         const { TextArea } = Input;
+
         return questions.map((question, questionIndex, array) => {
             if (question.type === 'radio') {
                 return (
@@ -319,11 +319,13 @@ class Edit extends React.Component {
 
     getFooter() {
         const disabledDate = (current) => current && current.valueOf() < Date.now();
+
         return (
             <div style={{ padding: 20 }}>
                 <div style={{ float: 'left' }}>
                     <span>问卷截止日期：</span>
-                    <DatePicker onChange={this.handleDatePick} disabledDate={disabledDate}/>
+                    <DatePicker onChange={this.handleDatePick} disabledDate={disabledDate} />
+                    <span style={{ marginLeft: 16 }}>你选择的日期为: {this.state.date }</span>
                 </div>
                 <div style={{ float: 'right' }}>
                     <Button onClick={this.handleSaveQuestionnaire}>保存问卷</Button>

@@ -2,7 +2,6 @@ import React from 'react';
 import createG2 from 'g2-react';
 import { Stat } from 'g2';
 import { Button } from 'antd';
-import mockData from '../mockData';
 
 const editing = localStorage.editing ? JSON.parse(localStorage.editing) : [];
 const Pie = createG2(chart => {
@@ -47,6 +46,7 @@ class Check extends React.Component {
 
     getCharts() {
         let questions = this.state.questions;
+        
         return questions.map((question, questionIndex) => {
             if (question.type === 'radio') {
                 return (

@@ -3,10 +3,8 @@ import { Table, Button, Popconfirm } from 'antd';
 import { Link } from 'react-router-dom';
 import mockData from '../mockData';
 
-// localStorage.list = JSON.stringify(mockData);
 // localStorage.list = []
 const list = localStorage.list ? JSON.parse(localStorage.list) : [];
-// const data = mockData.concat(list);
 const defaultQuestionnaire = {
     title: '这里是标题',
     date: '',
@@ -25,9 +23,7 @@ class Home extends React.Component {
         this.handleFill = this.handleFill.bind(this);
         this.handleCheck = this.handleCheck.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
-        this.state = {
-            dataSource: list
-        }
+        this.state = { dataSource: list };
     }
 
     handleAdd(){
@@ -35,7 +31,6 @@ class Home extends React.Component {
         const setEditing = Object.assign({}, {...defaultQuestionnaire, index})
         localStorage.editing = JSON.stringify(setEditing);
         window.location.reload();
-        debugger
     }
 
     handleReset() {
@@ -47,7 +42,6 @@ class Home extends React.Component {
         const setEditing = Object.assign({}, list[index]);
         localStorage.editing = JSON.stringify(setEditing);
         window.location.reload();
-        debugger
     }
 
     handleFill(index) {
@@ -64,6 +58,7 @@ class Home extends React.Component {
 
     handleDelete(key, index) {
         const dataSource = [...this.state.dataSource];
+
         if (list[index]) {
             list.splice(index, 1);
             localStorage.list = JSON.stringify(list);
@@ -71,7 +66,6 @@ class Home extends React.Component {
         } else if (key) {
             this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
         }
-        debugger
     }
 
     render() {
@@ -111,7 +105,7 @@ class Home extends React.Component {
                         prevButton = <Link to="/check"><Button onClick={() => this.handleCheck(index)}>查看数据</Button></Link>
                         break;
                     default:
-                        prevButton = <div></div>
+                        prevButton = <span></span>
                 }
                 return (
                     <span>

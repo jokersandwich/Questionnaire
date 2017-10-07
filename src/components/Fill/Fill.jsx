@@ -1,8 +1,6 @@
 import React from 'react';
 import { Input, Button, Radio, Checkbox, Modal } from 'antd';
-import mockData from '../mockData';
 
-// const data = mockData[1];
 const list = localStorage.list ? JSON.parse(localStorage.list) : [];
 const editing = localStorage.editing ? JSON.parse(localStorage.editing) : [];
 
@@ -64,36 +62,38 @@ class Fill extends React.Component {
                         unnecessary ++;
                     }
                     break;
+                default:
+                    console.log('err in Fill');
             }
         });
+        
         if (answer >= questions.length - unnecessary) {
             const me = this;
             Modal.confirm({
                 title: '确认提交问卷吗？',
                 onOk() {
+                    const index = me.state.index;
                     let questionsWithData = questions.map((item) => {
                         switch (item.type) {
                             case 'radio':
-                            debugger
                                 item.data.push({'选项': item.value});
                                 break;
                             case 'checkbox':
                                 const values = item.value.map((i) => {
-                                    debugger
                                     return { '选项': i };
                                 });
                                 item.data = item.data.concat(values);
+                                break;
                             case 'textarea':
                                 // item.data.push(item.text);
                                 break;
+                            default:
+                                console.log('err in Fill');
                         }
                         return item;
                     });
-                    const index = me.state.index;
-                    debugger
                     list[index].questions = questionsWithData;
                     localStorage.list = JSON.stringify(list);
-                    debugger
                     window.location.reload();
                     me.props.history.push('/');
                 }
@@ -122,6 +122,7 @@ class Fill extends React.Component {
             height: '32px',
             lineHeight: '32px'
         };
+        
         return questions.map((question, questionIndex, array) => {
             if (question.type === 'radio') {
                 return (

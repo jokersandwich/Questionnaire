@@ -1,13 +1,17 @@
 # Questionnire
 
 
-## 项目介绍
+## 介绍
 
 一个基于 React 的微型问卷调查平台。
 [设计参考图](http://ot8ooevw7.bkt.clouddn.com/%E9%97%AE%E5%8D%B7%E8%AE%BE%E8%AE%A1%E5%9B%BE.png)
 来自IFE2016。
 
-## 使用类库
+## 使用
+
+克隆到本地，`npm install`，`npm start`。
+
+## 类库
 
 - [react](https://reactjs.org/): 用于构建用户界面的 JavaScript 库。
 - [react-router](https://reacttraining.com/react-router/): 基于 React 之上的强大路由库，它可以让你向应用中快速地添加视图和数据流，同时保持页面与 URL 间的同步。
@@ -16,8 +20,6 @@
 - [g2-react](https://antv.alipay.com/index.html): 专业易用的可视化类库。
 
 ## 效果图
-
-（目前数据存在 LocalStorage 中，之后如果有空也可能换成 Node 后端。）
 
 ![image](http://ot8ooevw7.bkt.clouddn.com/%E9%97%AE%E5%8D%B7.jpg)
 

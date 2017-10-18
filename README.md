@@ -1,4 +1,4 @@
-# Questionnire
+# Questionnaire
 
 
 ## 介绍
@@ -20,8 +20,8 @@
 1. 克隆到本地：
 
 ```
-$ git clone https://github.com/jokersandwich/Questionnire
-$ cd Questionnire
+$ git clone https://github.com/jokersandwich/Questionnaire
+$ cd Questionnaire
 ```
 
 2. 安装依赖：

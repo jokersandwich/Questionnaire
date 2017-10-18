@@ -20,7 +20,7 @@
 1. 克隆到本地：
 
 ```
-$ git clone https://github.com/jokersandwich/Questionnaire
+$ git clone https://github.com/jokersandwich/Questionnaire.git
 $ cd Questionnaire
 ```
 

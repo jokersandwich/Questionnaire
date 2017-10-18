@@ -9,15 +9,26 @@
 
 ## 使用
 
-`git clone https://github.com/jokersandwich/Questionnire`
+1. 克隆到本地：
 
-`$ cd Questionnire`
+```
+git clone https://github.com/jokersandwich/Questionnire
+$ cd Questionnire
+```
 
-`$ npm install`
+2. 安装依赖：
 
-`$ npm start`
+```
+$ npm install
+```
 
-打开 http://localhost:3000/
+3. 启动服务：
+
+```
+$ npm start
+```
+
+浏览器会自动开启，并打开 http://localhost:3000/
 
 ## 类库
 

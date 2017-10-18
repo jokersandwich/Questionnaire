@@ -7,7 +7,7 @@
 [设计参考图](http://ot8ooevw7.bkt.clouddn.com/%E9%97%AE%E5%8D%B7%E8%AE%BE%E8%AE%A1%E5%9B%BE.png)
 来自IFE2016。
 
-## 类库
+### 类库：
 
 - [react](https://reactjs.org/): 用于构建用户界面的 JavaScript 库。
 - [react-router](https://reacttraining.com/react-router/): 基于 React 之上的强大路由库，它可以让你向应用中快速地添加视图和数据流，同时保持页面与 URL 间的同步。

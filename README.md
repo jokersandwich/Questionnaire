@@ -9,7 +9,15 @@
 
 ## 使用
 
-克隆到本地，`npm install`，`npm start`。
+`git clone https://github.com/jokersandwich/Questionnire`
+
+`$ cd Questionnire`
+
+`$ npm install`
+
+`$ npm start`
+
+打开 http://localhost:3000/
 
 ## 类库
 

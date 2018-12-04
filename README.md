@@ -3,7 +3,7 @@
 
 ## 介绍
 
-一个基于 React 的微型问卷调查平台。
+一个基于 React 的小型问卷调查平台。
 [设计参考图](http://ot8ooevw7.bkt.clouddn.com/%E9%97%AE%E5%8D%B7%E8%AE%BE%E8%AE%A1%E5%9B%BE.png)
 来自IFE2016。
 
